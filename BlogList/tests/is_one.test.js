@@ -1,12 +1,28 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
-const { dummy, totalLikes, favBlog, mostBlogs } = require('../utils/list_helper')
+const { dummy, totalLikes, favBlog, mostBlogs, mostLikes } = require('../utils/list_helper')
 
 test('dummy returns one', () => {
   const blogs = []
 
   const result = dummy(blogs)
   assert.strictEqual(result, 1)
+})
+
+describe('most likes', () => {
+  const authorWithMost = {
+    author: "Edsger W. Dijkstra",
+    likes: 17
+  }
+
+  test('most blogs in bigger list', () => {
+    const result = mostLikes(blogs)
+    assert.deepStrictEqual(result, authorWithMost)
+  })
+  test('most blogs in empty list', () => {
+    const result = mostLikes(listWithNoBlogs)
+    assert.deepStrictEqual(result, 0)
+  })
 })
 
 describe('most blogs', () => {
@@ -31,7 +47,8 @@ describe('most blogs', () => {
     assert.deepStrictEqual(result, 0)
   })
 })
-describe('most likes', () =>{
+
+describe('fav blog', () =>{
     const blogWithMost = {
         title: "Canonical string reduction",
         author: "Edsger W. Dijkstra",
@@ -53,15 +70,15 @@ describe('most likes', () =>{
         __v: 0
       }
     ] 
-  test('most likes in empty list', () => {
+  test('fav blog in empty list', () => {
       const result = favBlog(listWithNoBlogs)
       assert.deepStrictEqual(result, 0)
   })
-  test('most likes in list with a blog', () => {
+  test('fav blog in list with a blog', () => {
       const result = favBlog(listWithOneBlog)
       assert.deepStrictEqual(result, blogWithOne)
   })
-  test('most likes in bigger list', () => {
+  test('fav blog in bigger list', () => {
       const result = favBlog(blogs)
       assert.deepStrictEqual(result, blogWithMost)
   })

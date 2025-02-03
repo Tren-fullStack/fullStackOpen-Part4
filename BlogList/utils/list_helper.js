@@ -2,6 +2,25 @@ const dummy = (blogs) => {
     return 1
 }
 
+const mostLikes = (blogs) => {
+    if (blogs.length === 0) return 0
+
+    author = new Map()
+    for (i=0; i < blogs.length; i++) {
+        if (author.has(blogs[i].author)) {
+            author.set(blogs[i].author, author.get(blogs[i].author) +  blogs[i].likes)
+        }
+        else {author.set(blogs[i].author, blogs[i].likes)}
+    }
+
+    maxLikes = Math.max(...author.values())
+    mostAuthor = {
+        author: [...author].find(([key,val]) => val === maxLikes)[0],
+        likes: maxLikes
+    }
+    return mostAuthor
+}
+
 const mostBlogs = (blogs) => {
     if (blogs.length === 0) return 0
 
@@ -51,4 +70,4 @@ const favBlog = (blogs) => {
     return mostLikedBlog
 }
   
-module.exports = { dummy, totalLikes, favBlog, mostBlogs }
+module.exports = { dummy, totalLikes, favBlog, mostBlogs, mostLikes }
