@@ -13,18 +13,9 @@ describe('testing GET', async () => {
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
-    assert.strictEqual(response.body, 3)
+    assert.strictEqual(response.body.length, 2)
   })
 
-  after(async () => {
-    await mongoose.connection.close()
-  }) 
-})
-
-
-describe('number of blogs in database', async () => {
-
-    
   after(async () => {
     await mongoose.connection.close()
   }) 
