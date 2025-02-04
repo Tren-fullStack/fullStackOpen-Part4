@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "title": "Learning Backend Testing",
-    "author": "Fred",
+    "author": "Larry",
     "url": "https//blog",
     "likes": 0
 }
