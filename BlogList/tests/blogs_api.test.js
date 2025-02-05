@@ -5,7 +5,7 @@ const assert = require('node:assert')
 
 const app = require('../app')
 const Blog = require('../models/blog')
-const {testBlogs, sampleBlogPost, blogsInDb} = require('./test_helper')
+const {testBlogs, sampleBlogPost, noUrl, noTitle, noUrlandTitle, blogsInDb} = require('./test_helper')
 const api = supertest(app)
 
 //reset test db, so tests are always the same
@@ -74,6 +74,33 @@ describe('testing default Likes', async() => {
     
     const likes = response.body.likes
     assert.strictEqual(likes, 0)
+  })
+})
+
+describe('testing missing fields', async() => {
+  test.only('missing url gives 400 response code', async() => {
+    const response = await api
+      .post('/api/blogs')
+      .send(noUrl[0])
+
+    const status = response.status
+    assert.strictEqual(status, 400)
+  })
+  test.only('missing title gives 400 response code', async() => {
+    const response = await api
+      .post('/api/blogs')
+      .send(noTitle[0])
+
+    const status = response.status
+    assert.strictEqual(status, 400)
+  })
+  test.only('missing title and url gives 400 response code', async() => {
+    const response = await api
+      .post('/api/blogs')
+      .send(noUrlandTitle[0])
+
+    const status = response.status
+    assert.strictEqual(status, 400)
   })
 })
 

@@ -3,6 +3,10 @@ const Blog = require('../models/blog')
 const { info } = require('../utils/logger')
 
 blogRouter.post('/', async (request, response) => {
+  if (!request.body.title || !request.body.url) {
+    response.sendStatus(400)
+  }
+  else {
     const blog = new Blog(request.body)
     info(`This is the new blog: ${blog}`)
     if (!request.body.likes) {
@@ -14,6 +18,7 @@ blogRouter.post('/', async (request, response) => {
     info(`added blog: ${blog.title}, written by ${blog.author}`)
 
     response.status(201).json(result)
+  }
 })
 
 blogRouter.get('/', async (request, response) => {

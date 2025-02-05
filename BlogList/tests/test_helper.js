@@ -23,11 +23,34 @@ const sampleBlogPost = [
   }
 ]
 
+const noUrl = [
+  {
+    'title': 'All we got to do',
+    'author': 'Jamie xx',
+    'likes': 4
+  }
+]
+
+const noTitle = [
+  {
+    'author': 'Kid Cudi',
+    'url': 'https://ManOntheMoon',
+    'likes': 3
+  }
+]
+
+const noUrlandTitle = [
+  {
+    'author': 'Kanye West',
+    'likes': 1000
+  }
+]
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
 }
   
 module.exports = {
-  testBlogs, sampleBlogPost, blogsInDb
+  testBlogs, sampleBlogPost, noUrl, noTitle, noUrlandTitle, blogsInDb
 }
