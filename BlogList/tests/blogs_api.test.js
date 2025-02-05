@@ -5,9 +5,10 @@ const assert = require('node:assert')
 
 const app = require('../app')
 const Blog = require('../models/blog')
-const {testBlogs} = require('./test_helper')
+const {testBlogs, blogsInDb} = require('./test_helper')
 const api = supertest(app)
 
+//reset test db, so tests are always the same
 beforeEach(async () => {
   console.log('clearing db...')
   await Blog.deleteMany({})
@@ -28,14 +29,17 @@ describe('testing GET', async () => {
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
-    assert.strictEqual(response.body.length, 2)
+    assert.strictEqual(response.body.length, testBlogs.length)
   })
-
-  after(async () => {
-    await mongoose.connection.close()
-  }) 
 })
 
-describe('testing id', async() => {
-  test.only('')
+/*describe('testing id', async() => {
+  test.only('blog identifier is called id', async () => {
+    const response = await blogsInDb()
+    console.log(`blogs in db: ${response}`)
+  })
+}) */
+
+after(async () => {
+  await mongoose.connection.close()
 })
