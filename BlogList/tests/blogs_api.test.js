@@ -5,7 +5,7 @@ const assert = require('node:assert')
 
 const app = require('../app')
 const Blog = require('../models/blog')
-const {testBlogs, blogsInDb} = require('./test_helper')
+const {testBlogs, sampleBlogPost, blogsInDb} = require('./test_helper')
 const api = supertest(app)
 
 //reset test db, so tests are always the same
@@ -24,7 +24,7 @@ beforeEach(async () => {
 })
 
 describe('testing GET', async () => {
-  test.only('3 blogs are returned as json', async () => {
+  test('3 blogs are returned as json', async () => {
     const response = await api
       .get('/api/blogs')
       .expect(200)
@@ -34,11 +34,11 @@ describe('testing GET', async () => {
 })
 
 describe('testing id', async() => {
-  test.only('blog identifier is called id', async () => {
+  test('blog identifier is called id', async () => {
     const response = await blogsInDb()
     let idKey = false
     for (i=0; i<response.length; i++) {
-      if (Object.keys(response[i]).find(key => key == 'id')) {idKey = true}
+      if (Object.keys(response[i]).find(key => key === 'id')) {idKey = true}
       else {
         idKey = false
         break
@@ -46,7 +46,24 @@ describe('testing id', async() => {
     }
     assert.strictEqual(idKey, true)
   })
-}) 
+})
+
+describe('testing POST', async() => {
+  test('new blog post is created', async() => {
+    await api
+     .post('/api/blogs')
+     .send(sampleBlogPost[0])
+     .expect(201)
+     .expect('Content-Type', /application\/json/)
+    
+    const withBlogAdded = await blogsInDb()
+    console.log('Added: ',withBlogAdded)
+    assert.strictEqual(withBlogAdded.length, testBlogs.length + 1)
+
+    const addedTitle = withBlogAdded.find(t => t.title === 'Adore me')
+    assert.deepStrictEqual(addedTitle.title, sampleBlogPost[0].title)
+  })
+})
 
 after(async () => {
   await mongoose.connection.close()

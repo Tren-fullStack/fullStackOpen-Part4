@@ -8,18 +8,27 @@ const testBlogs = [
     "likes": 5
   },
   {
-    "title": "Learning Backend Testing",
+    "title": "Constantly Cleaning",
     "author": "Young Thug",
     "url": "https//youmakeit.com",
     "likes": 10
   },
 ]
-  
+ 
+const sampleBlogPost = [
+  {
+    "title": "Adore me",
+    "author": "King Krule",
+    "url": "https//horizon.com",
+    "likes": 15
+  }
+]
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
 }
   
 module.exports = {
-  testBlogs, blogsInDb
+  testBlogs, sampleBlogPost, blogsInDb
 }

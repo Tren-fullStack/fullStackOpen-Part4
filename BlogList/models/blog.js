@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
-    title: String,
-    author: String,
-    url: String,
-    likes: Number
-  }, {
+  title: String,
+  author: String,
+  url: String,
+  likes: Number
+  },  {
   virtuals: {
     id: {
       get() {return this._id.toHexString();}
     }
-  }
+  } 
 })
 
 blogSchema.set('toJSON', {
