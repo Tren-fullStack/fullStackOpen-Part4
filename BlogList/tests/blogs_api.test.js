@@ -23,8 +23,8 @@ beforeEach(async () => {
   console.log('re-initializing testing db completed')
 })
 
-describe('testing GET', async () => {
-  test('3 blogs are returned as json', async () => {
+describe('blog posts are retrieved', async () => {
+  test('the correct number of blogs are returned as json', async () => {
     const response = await api
       .get('/api/blogs')
       .expect(200)
@@ -33,7 +33,7 @@ describe('testing GET', async () => {
   })
 })
 
-describe('testing id', async() => {
+describe('id field', async() => {
   test('blog identifier is called id', async () => {
     const response = await blogsInDb()
     let idKey = false
@@ -48,8 +48,8 @@ describe('testing id', async() => {
   })
 })
 
-describe('testing POST', async() => {
-  test('new blog post is created', async() => {
+describe('addition of a new blog', async() => {
+  test('blog list length increases when blog is added', async() => {
     await api
      .post('/api/blogs')
      .send(sampleBlogPost[0])
@@ -65,7 +65,7 @@ describe('testing POST', async() => {
   })
 })
 
-describe('testing default Likes', async() => {
+describe('when likes are missing', async() => {
   test('Likes become 0 if not given', async() => {
     const response = await api
       .post('/api/blogs')
@@ -77,30 +77,39 @@ describe('testing default Likes', async() => {
   })
 })
 
-describe('testing missing fields', async() => {
-  test.only('missing url gives 400 response code', async() => {
+describe('when fields are missing', async() => {
+  test('missing url gives 400 response code', async() => {
     const response = await api
       .post('/api/blogs')
       .send(noUrl[0])
-
-    const status = response.status
-    assert.strictEqual(status, 400)
+      .expect(400)
   })
-  test.only('missing title gives 400 response code', async() => {
+  test('missing title gives 400 response code', async() => {
     const response = await api
       .post('/api/blogs')
       .send(noTitle[0])
-
-    const status = response.status
-    assert.strictEqual(status, 400)
+      .expect(400)
   })
-  test.only('missing title and url gives 400 response code', async() => {
+  test('missing title and url gives 400 response code', async() => {
     const response = await api
       .post('/api/blogs')
       .send(noUrlandTitle[0])
+      .expect(400)
+  })
+})
 
-    const status = response.status
-    assert.strictEqual(status, 400)
+describe('removing a blog', async() => {
+  test.only('delete request with valid id gives 204 status and removes blog', async() => {
+    get = await api.get('/api/blogs')
+    const blogToDel = get.body[0]
+    console.log(blogToDel)
+
+    const response = await api
+      .delete(`/api/blogs/${blogToDel.id}`)
+      .expect(204)
+    
+    const withBlogDel = await blogsInDb()
+    assert.strictEqual(withBlogDel.length, testBlogs.length - 1)
   })
 })
 
