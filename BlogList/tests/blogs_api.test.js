@@ -33,12 +33,20 @@ describe('testing GET', async () => {
   })
 })
 
-/*describe('testing id', async() => {
+describe('testing id', async() => {
   test.only('blog identifier is called id', async () => {
     const response = await blogsInDb()
-    console.log(`blogs in db: ${response}`)
+    let idKey = false
+    for (i=0; i<response.length; i++) {
+      if (Object.keys(response[i]).find(key => key == 'id')) {idKey = true}
+      else {
+        idKey = false
+        break
+      }
+    }
+    assert.strictEqual(idKey, true)
   })
-}) */
+}) 
 
 after(async () => {
   await mongoose.connection.close()

@@ -5,6 +5,12 @@ const blogSchema = new mongoose.Schema({
     author: String,
     url: String,
     likes: Number
+  }, {
+  virtuals: {
+    id: {
+      get() {return this._id.toHexString();}
+    }
+  }
 })
 
 blogSchema.set('toJSON', {
