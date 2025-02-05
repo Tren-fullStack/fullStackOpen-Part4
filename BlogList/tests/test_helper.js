@@ -20,7 +20,6 @@ const sampleBlogPost = [
     "title": "Adore me",
     "author": "King Krule",
     "url": "https//horizon.com",
-    "likes": 15
   }
 ]
 

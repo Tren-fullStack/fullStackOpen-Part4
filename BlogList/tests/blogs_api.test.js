@@ -65,6 +65,18 @@ describe('testing POST', async() => {
   })
 })
 
+describe('testing default Likes', async() => {
+  test('Likes become 0 if not given', async() => {
+    const response = await api
+      .post('/api/blogs')
+      .send(sampleBlogPost[0])
+      .expect('Content-Type', /application\/json/)
+    
+    const likes = response.body.likes
+    assert.strictEqual(likes, 0)
+  })
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
