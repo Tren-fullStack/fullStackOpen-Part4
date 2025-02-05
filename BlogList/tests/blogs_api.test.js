@@ -6,6 +6,7 @@ const assert = require('node:assert')
 const app = require('../app')
 const Blog = require('../models/blog')
 const {testBlogs, sampleBlogPost, noUrl, noTitle, noUrlandTitle, blogsInDb} = require('./test_helper')
+const { get } = require('node:http')
 const api = supertest(app)
 
 //reset test db, so tests are always the same
@@ -99,17 +100,35 @@ describe('when fields are missing', async() => {
 })
 
 describe('removing a blog', async() => {
-  test.only('delete request with valid id gives 204 status and removes blog', async() => {
-    get = await api.get('/api/blogs')
+  test('delete request with valid id gives 204 status and removes blog', async() => {
+    const get = await api.get('/api/blogs')
     const blogToDel = get.body[0]
-    console.log(blogToDel)
+    console.log('del blog', blogToDel)
 
-    const response = await api
+    await api
       .delete(`/api/blogs/${blogToDel.id}`)
       .expect(204)
     
     const withBlogDel = await blogsInDb()
     assert.strictEqual(withBlogDel.length, testBlogs.length - 1)
+  })
+})
+
+describe('updating a blog', async() => {
+  test('put request with valid id increases likes by 1', async() => {
+    const put = await api.get('/api/blogs')
+    const blogToUpdate = put.body[0]
+    console.log('update blog', blogToUpdate)
+
+    const response = await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .expect(201)
+    
+    const blogsUpd = await blogsInDb()
+    const updatedBlog = blogsUpd.filter(blog => blog.id === blogToUpdate.id)
+    console.log('updated blog', updatedBlog)
+    
+    assert.strictEqual(updatedBlog[0].likes, blogToUpdate.likes + 1)
   })
 })
 
