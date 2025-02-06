@@ -6,7 +6,6 @@ const assert = require('node:assert')
 const app = require('../app')
 const Blog = require('../models/blog')
 const {testBlogs, sampleBlogPost, noUrl, noTitle, noUrlandTitle, blogsInDb} = require('./test_helper')
-const { get } = require('node:http')
 const api = supertest(app)
 
 //reset test db, so tests are always the same

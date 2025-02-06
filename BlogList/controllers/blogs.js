@@ -1,7 +1,5 @@
 const blogRouter = require('express').Router()
-const { request } = require('../app')
 const Blog = require('../models/blog')
-const { blogsInDb } = require('../tests/test_helper')
 const { info } = require('../utils/logger')
 
 blogRouter.post('/', async (request, response) => {
@@ -13,7 +11,7 @@ blogRouter.post('/', async (request, response) => {
     info(`This is the new blog: ${blog}`)
     if (!request.body.likes) {
       blog.likes = 0
-      console.log('added default likes: ', blog.likes)
+      info('added default likes: ', blog.likes)
     }
 
     const result = await blog.save()
@@ -33,7 +31,7 @@ blogRouter.get('/', async (request, response) => {
 
 blogRouter.get('/:id', async (request, response) => {
   const id = request.params.id
-  console.log(id)
+  info(id)
   const result = await Blog.find({ _id:id })
 
   response.json(result)
@@ -46,10 +44,10 @@ blogRouter.delete('/:id', async (request, response) => {
 
 blogRouter.put('/:id', async (request, response) => {
   const blogToUpdate = await Blog.findById(request.params.id)
-  console.log(blogToUpdate.likes)
+  info(blogToUpdate.likes)
 
   const likes = blogToUpdate.likes + 1
-  console.log(likes)
+  info(likes)
 
   await Blog.updateOne( {likes: likes} )
   response.sendStatus(201, 'blog\'s likes updated')

@@ -7,6 +7,7 @@ require('express-async-errors')
 const logger = require('./utils/logger')
 const { requestLogger, errorHandler, unknownEndpoint } = require('./utils/middleware')
 const blogRouter = require('./controllers/blogs')
+const userRouter = require('./controllers/users')
 
 mongoose.set('strictQuery', false) 
 
@@ -20,6 +21,7 @@ app.use(express.json())
 app.use(requestLogger)
 
 app.use('/api/blogs', blogRouter)
+app.use('/api/users', userRouter)
 
 app.use(unknownEndpoint)
 app.use(errorHandler)
