@@ -5,21 +5,11 @@ const { info } = require('../utils/logger')
 const jsonToken = require('jsonwebtoken')
 const config = require('../utils/config')
 
-// formats the token by grabbing from the authorization header
-const getToken = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '')
-  }
-  else {return null}
-}
-
 blogRouter.post('/', async (request, response) => {
   const body = request.body
-  info('body', body)
-  
+  info('token', request.token)
   // verifys that requested token is same as stored token and finds user using id stored in token
-  const decodedToken = jsonToken.verify(getToken(request), config.SECRET)
+  const decodedToken = jsonToken.verify(request.token, config.SECRET)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }

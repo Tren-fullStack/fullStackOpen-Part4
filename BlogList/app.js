@@ -22,9 +22,9 @@ app.use(express.json())
 app.use(requestLogger)
 app.use(getToken)
 
-app.use('/api/blogs', blogRouter)
-app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
+app.use('/api/users', userRouter)
+app.use('/api/blogs', blogRouter)
 
 app.use(unknownEndpoint)
 app.use(errorHandler)

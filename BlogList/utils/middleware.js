@@ -11,14 +11,15 @@ const requestLogger = (request, response, next) => {
 
 // formats the token by grabbing from the authorization header
 const getToken = (request, response, next) => {
-  const authorization = request.get('authorization')
+  let authorization = request.get('authorization')
+
   if (authorization && authorization.startsWith('Bearer ')) {
-    authorization.replace('Bearer ', '')
-    next()
+    authorization = authorization.replace('Bearer ', '')
+    console.log(authorization)
+    request.token = authorization
   }
-  else {
-    next()
-  }
+
+  next()
 }
 
 const unknownEndpoint = (request, response, next) => {
