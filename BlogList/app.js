@@ -8,6 +8,7 @@ const logger = require('./utils/logger')
 const { requestLogger, errorHandler, unknownEndpoint } = require('./utils/middleware')
 const blogRouter = require('./controllers/blogs')
 const userRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 mongoose.set('strictQuery', false) 
 
@@ -22,6 +23,7 @@ app.use(requestLogger)
 
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 
 app.use(unknownEndpoint)
 app.use(errorHandler)
