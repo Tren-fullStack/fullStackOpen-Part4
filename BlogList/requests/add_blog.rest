@@ -3,8 +3,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNEb3Jzc2VycyIsImlkIjoiNjdhNjY5OGY0MmM4OTk3NDkzYzA2ODUxIiwiaWF0IjoxNzM4OTU5MjcwfQ.kBn5mO9eS3rx6xRTwuUFnMXhX9krMQSfMDpJ2-KIEkE
 
 {
-    "likes": 50,
-    "title": "MMA",
-    "author": "Alex Pereira",
-    "url": "https://UFC.com",
+    "likes": 20,
+    "title": "Hockey",
+    "author": "Stephen D",
+    "url": "https://hockey.com",
+    "user": "61" 
 }
