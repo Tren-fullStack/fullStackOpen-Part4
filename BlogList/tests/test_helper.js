@@ -3,13 +3,13 @@ const Blog = require('../models/blog')
 const testBlogs = [
   {
     "title": "Learning Backend Testing",
-    "author": "Hov",
+    "author": "Stephen Dorssers",
     "url": "https//gotafewc's.com",
     "likes": 5
   },
   {
     "title": "Constantly Cleaning",
-    "author": "Young Thug",
+    "author": "Joe Rogan",
     "url": "https//youmakeit.com",
     "likes": 10
   },

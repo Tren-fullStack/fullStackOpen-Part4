@@ -2,8 +2,9 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-    "title": "Learning Backend Testing",
-    "author": "Jobe",
-    "url": "https//blog",
-    "likes": 8
+    "title": "MMA",
+    "author": "Alex Pereira",
+    "url": "https://UFC.com",
+    "likes": 50,
+    "user": "67a6530630bae20b47f6a426"
 }

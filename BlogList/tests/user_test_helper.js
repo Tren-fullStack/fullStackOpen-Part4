@@ -1,40 +1,27 @@
 const User = require('../models/user')
 
-const testUsers = [
-    {
-      username: 'sDorssers',
-      name: 'Stephen Dorssers',
-      password: 'boDiddly'
-    },
-    {
-      username: 'jRogan',
-      name: 'Joe Rogan',
-      password: 'DMT?'
-    }
-]
-
 const alienUser = {
     username: 'aLeeNen',
     name: 'Martian Man',
-    password: 'threeDimBlackHole'
+    passHash: 'threeBlackHole'
 }
 
 const smolUserN = {
   username: 'sn',
   name: 'Phil Collines',
-  password: 'MooveIt'
+  passHash:'MooveIt'
 }
 
 const smolPass = {
   username: 'gWibbly',
   name: 'Garry Wibbly',
-  password: 'gW'
+  passHash:'gW'
 }
 
 const notUnique = {
   username: 'jRogan',
   name: 'Paul Rogan',
-  password: 'TimeMovesForever'
+  passHash:'TimeMovesForever'
 }
 
 const usersInDb = async () => {
@@ -42,4 +29,4 @@ const usersInDb = async () => {
   return blogs.map(user => user.toJSON())
 }
 
-module.exports = { testUsers, alienUser, smolUserN, smolPass, notUnique, usersInDb }
+module.exports = { alienUser, smolUserN, smolPass, notUnique, usersInDb }

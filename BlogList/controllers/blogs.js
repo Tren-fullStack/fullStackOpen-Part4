@@ -1,32 +1,52 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const { info } = require('../utils/logger')
 
 blogRouter.post('/', async (request, response) => {
-  if (!request.body.title || !request.body.url) {
+  const body = request.body
+  info('body', body)
+
+  const user = await User.findById(body.user)
+  
+  // blog needs title and url to be created
+  if (!body.title || !body.url) {
     response.sendStatus(400, 'missing url or title')
   }
   else {
-    const blog = new Blog(request.body)
+    let blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes,
+      user: user._id,
+    })
     info(`This is the new blog: ${blog}`)
-    if (!request.body.likes) {
+
+    // makes likes 0 if not given then saves blog to db
+    if (!body.likes) {
       blog.likes = 0
       info('added default likes: ', blog.likes)
     }
+    blog = await blog.save()
+    info('blog id: ', blog._id)
 
-    const result = await blog.save()
+    // adds blod id to that blogs user and re-saves the user to the db
+    user.blogs = user.blogs.concat(blog._id)
+    await user.save()
+    
+    //shows blog info in terminal and network
     info(`added blog: ${blog.title}, written by ${blog.author}`)
-
-    response.status(201, 'new blog created').json(result)
+    response.status(201, 'new blog created').json(blog)
   }
 })
 
 blogRouter.get('/', async (request, response) => {
-  const result = await Blog.find({})
-  info('Here is the result: ', result)
-  info('Length of result: ',result.length)
+  // get blogs and adds their user info to the user field
+  const blogs = await Blog.find({}).populate('user', ['username','name','passHash'])
+  info('Length of blogs: ', blogs.length)
   
-  response.json(result)
+  response.json(blogs)
 })
 
 blogRouter.get('/:id', async (request, response) => {
