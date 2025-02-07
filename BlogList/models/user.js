@@ -13,7 +13,10 @@ const userSchema = new mongoose.Schema({
     unique: true, 
   },
   name: String,
-  passHash: String,
+  passHash: {
+    type: String,
+    required: true,
+  }
 })
 
 userSchema.set('toJSON', {

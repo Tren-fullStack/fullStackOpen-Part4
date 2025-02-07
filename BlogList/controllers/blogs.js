@@ -2,16 +2,32 @@ const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const { info } = require('../utils/logger')
+const jsonToken = require('jsonwebtoken')
+const config = require('../utils/config')
+
+// formats the token by grabbing from the authorization header
+const getToken = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  else {return null}
+}
 
 blogRouter.post('/', async (request, response) => {
   const body = request.body
   info('body', body)
-
-  const user = await User.findById(body.user)
+  
+  // verifys that requested token is same as stored token and finds user using id stored in token
+  const decodedToken = jsonToken.verify(getToken(request), config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
   
   // blog needs title and url to be created
   if (!body.title || !body.url) {
-    response.sendStatus(400, 'missing url or title')
+    response.status(400).json({ error: 'missing url or title' })
   }
   else {
     let blog = new Blog({
@@ -43,7 +59,7 @@ blogRouter.post('/', async (request, response) => {
 
 blogRouter.get('/', async (request, response) => {
   // get blogs and adds their user info to the user field
-  const blogs = await Blog.find({}).populate('user', ['username','name','passHash'])
+  const blogs = await Blog.find({}).populate('user', ['username','name'])
   info('Length of blogs: ', blogs.length)
   
   response.json(blogs)
