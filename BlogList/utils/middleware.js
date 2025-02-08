@@ -15,7 +15,6 @@ const getToken = (request, response, next) => {
 
   if (authorization && authorization.startsWith('Bearer ')) {
     authorization = authorization.replace('Bearer ', '')
-    console.log(authorization)
     request.token = authorization
   }
 

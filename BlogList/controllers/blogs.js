@@ -64,8 +64,33 @@ blogRouter.get('/:id', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
-  await Blog.deleteOne({ id:request.body.id }) 
-  response.sendStatus(204, 'blog deleted')
+  // verifies token is same as users
+  const decodedToken = jsonToken.verify(request.token, config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  // gets user id if token is valid
+  const user = await User.findById(decodedToken.id)
+  let userId = user._id
+  userId = userId.toString()
+  
+  // gets blog info
+  const blogId = request.params.id
+  const blog = await Blog.findById(blogId)
+
+  // checks that blog exists with request id
+  if (!blog) {response.status(400).json({ error: 'no blog found'})}
+
+  const testUserId = blog.user
+  info(`id from blog: ${testUserId.toString()} should be same as ${userId} if blog found`)
+
+  // checks that the user making the del request is the same that posted it
+  if (testUserId.toString() == userId) {
+    await Blog.findByIdAndDelete(blogId) 
+    response.status(204).end()
+  } else {
+    return response.status(401).json({ error: 'unathorized user' })
+  }
 })
 
 blogRouter.put('/:id', async (request, response) => {
@@ -76,7 +101,7 @@ blogRouter.put('/:id', async (request, response) => {
   info(likes)
 
   await Blog.updateOne( {likes: likes} )
-  response.sendStatus(201, 'blog\'s likes updated')
+  response.status(201)
 })
 
 module.exports = blogRouter

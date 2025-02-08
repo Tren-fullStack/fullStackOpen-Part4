@@ -9,3 +9,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNEb
     "url": "https://hockey.com",
     "user": "61" 
 }
+
+###
+POST http://localhost:3003/api/blogs/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpCbGFrZSIsImlkIjoiNjdhNmNkN2I5MmYyZmQxMzc4ODNmZDI2IiwiaWF0IjoxNzM4OTg0ODQ2fQ.8nMCKqU-_EPR9Uh_-ywylFB_q7l4Fhq6oPNyJrIL1AM
+
+{
+    "likes":30,
+    "title": "Music",
+    "author": "James B",
+    "url": "https://music.com",
+    "user": "48"
+}
