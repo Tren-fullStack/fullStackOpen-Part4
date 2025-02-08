@@ -1,19 +1,10 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
 const { info } = require('../utils/logger')
-const jsonToken = require('jsonwebtoken')
-const config = require('../utils/config')
 
 blogRouter.post('/', async (request, response) => {
   const body = request.body
-  info('token', request.token)
-  // verifys that requested token is same as stored token and finds user using id stored in token
-  const decodedToken = jsonToken.verify(request.token, config.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
-  const user = await User.findById(decodedToken.id)
+  const user = request.user
   
   // blog needs title and url to be created
   if (!body.title || !body.url) {
@@ -64,14 +55,7 @@ blogRouter.get('/:id', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
-  // verifies token is same as users
-  const decodedToken = jsonToken.verify(request.token, config.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
-  // gets user id if token is valid
-  const user = await User.findById(decodedToken.id)
-  let userId = user._id
+  let userId = request.user._id
   userId = userId.toString()
   
   // gets blog info
