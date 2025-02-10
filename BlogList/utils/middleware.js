@@ -25,7 +25,6 @@ const getToken = (request, response, next) => {
 }
 
 const userExtractor = async (request, response, next) => {
-  console.log(request.token)
   if (request.token === undefined) {next()}
   // verifys that requested token is same as stored token and finds user using id stored in token
   else {
@@ -35,7 +34,6 @@ const userExtractor = async (request, response, next) => {
     }
     const user = await User.findById(decodedToken.id)
     request.user = user
-    
     next()
   }
 }
