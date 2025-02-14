@@ -12,7 +12,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true, 
   },
-  name: String,
+  name: {
+    type: String,
+    required: true,
+  },
   passHash: {
     type: String,
     required: true,
