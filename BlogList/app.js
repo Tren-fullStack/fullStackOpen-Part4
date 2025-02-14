@@ -16,7 +16,7 @@ mongoose.connect(config.MONGODB_URI)
   .catch(error => {
     logger.err(`Unable to connect to MongoDB: ${error}`)
 })
-
+app.use(express.static('dist'))
 app.use(cors())
 app.use(express.json())
 app.use(requestLogger)
